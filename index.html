@@ -4,301 +4,261 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Essential Tee — White | Kýček Studios</title>
-  <meta name="description" content="Performance tee with signature crow mark. Made by Humans, on Earth.">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   
   <style>
     :root {
       --black: #0a0a0a;
-      --dark: #141414;
-      --dark-elevated: #1a1a1a;
-      --dark-border: #2a2a2a;
-      --white: #ffffff;
-      --gray-100: #f5f5f5;
-      --gray-300: #a0a0a0;
-      --gray-500: #6a6a6a;
-      --gray-700: #3a3a3a;
+      --dark: #111;
+      --dark-border: #222;
+      --white: #fff;
       --red: #E63946;
-      --red-hover: #ff4d5a;
-      
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      --gray: #666;
+      --light-gray: #999;
     }
     
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    html {
-      scroll-behavior: smooth;
-    }
-    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: var(--font);
+      font-family: 'Inter', sans-serif;
       background: var(--black);
       color: var(--white);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      cursor: none;
     }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; cursor: none; border: none; background: none; }
     
-    a {
-      color: inherit;
-      text-decoration: none;
+    /* Cursor */
+    .cursor {
+      width: 40px;
+      height: 40px;
+      background: var(--white);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.2s ease;
     }
+    .cursor.click { transform: scale(0.8); }
     
-    img {
-      max-width: 100%;
-      display: block;
-    }
-    
-    button {
-      font-family: inherit;
-      cursor: pointer;
-      border: none;
-      background: none;
-    }
-    
-    /* ===== HEADER ===== */
+    /* Header */
     .header {
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      z-index: 1000;
-      padding: 20px 40px;
+      z-index: 100;
+      padding: 24px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: linear-gradient(to bottom, rgba(10,10,10,0.95), rgba(10,10,10,0));
-      transition: background 0.3s ease;
+      mix-blend-mode: difference;
     }
-    
-    .header.scrolled {
-      background: rgba(10,10,10,0.98);
-      backdrop-filter: blur(20px);
-    }
-    
-    .logo {
-      height: 28px;
-      opacity: 0.9;
-      transition: opacity 0.2s ease;
-    }
-    
-    .logo:hover {
-      opacity: 1;
-    }
-    
-    .nav {
-      display: flex;
-      gap: 40px;
-      align-items: center;
-    }
-    
-    .nav-link {
-      font-size: 12px;
+    .logo { height: 24px; filter: invert(1); }
+    .nav { display: flex; gap: 40px; }
+    .nav a {
+      font-size: 11px;
       font-weight: 500;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--gray-300);
-      transition: color 0.2s ease;
     }
     
-    .nav-link:hover {
-      color: var(--white);
-    }
-    
-    .cart-count {
-      background: var(--red);
-      color: var(--white);
-      font-size: 10px;
-      font-weight: 600;
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-left: 6px;
-    }
-    
-    /* ===== MAIN PRODUCT SECTION ===== */
-    .product-section {
+    /* ==================== HERO SECTION ==================== */
+    .hero {
       min-height: 100vh;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.2fr 1fr;
       padding-top: 80px;
     }
     
     /* Gallery */
     .gallery {
-      position: sticky;
-      top: 80px;
-      height: calc(100vh - 80px);
-      display: flex;
+      position: relative;
       background: var(--dark);
-    }
-    
-    .gallery-thumbnails {
-      width: 80px;
-      padding: 20px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      overflow-y: auto;
-    }
-    
-    .thumbnail {
-      width: 56px;
-      height: 56px;
-      border-radius: 4px;
       overflow: hidden;
-      cursor: pointer;
-      opacity: 0.5;
-      transition: all 0.2s ease;
-      border: 2px solid transparent;
     }
     
-    .thumbnail:hover {
-      opacity: 0.8;
-    }
-    
-    .thumbnail.active {
-      opacity: 1;
-      border-color: var(--white);
-    }
-    
-    .thumbnail img {
-      width: 100%;
+    .gallery-slides {
+      display: flex;
       height: 100%;
-      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
-    .gallery-main {
-      flex: 1;
+    .gallery-slide {
+      min-width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 40px;
-      position: relative;
-      overflow: hidden;
+      padding: 60px;
     }
     
-    .gallery-main img {
+    .gallery-slide img {
       max-width: 100%;
-      max-height: 100%;
+      max-height: 80vh;
       object-fit: contain;
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-    
-    .gallery-main img.active {
-      opacity: 1;
     }
     
     .gallery-nav {
       position: absolute;
-      bottom: 30px;
+      bottom: 40px;
       left: 50%;
       transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-    }
-    
-    .gallery-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--gray-700);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-    
-    .gallery-dot.active {
-      background: var(--white);
-      transform: scale(1.2);
-    }
-    
-    /* Product Info */
-    .product-info {
-      padding: 60px 80px 60px 60px;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .breadcrumb {
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray-500);
-      margin-bottom: 30px;
-    }
-    
-    .breadcrumb a:hover {
-      color: var(--gray-300);
-    }
-    
-    .product-title {
-      font-size: 42px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 8px;
-    }
-    
-    .product-subtitle {
-      font-size: 15px;
-      color: var(--gray-500);
-      margin-bottom: 30px;
-    }
-    
-    .product-price {
-      font-size: 24px;
-      font-weight: 500;
-      margin-bottom: 40px;
-    }
-    
-    .product-price .currency {
-      font-size: 16px;
-      color: var(--gray-500);
-      margin-right: 2px;
-    }
-    
-    /* Color Selector */
-    .option-group {
-      margin-bottom: 30px;
-    }
-    
-    .option-label {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--gray-500);
-      margin-bottom: 12px;
-      display: flex;
-      justify-content: space-between;
-    }
-    
-    .option-value {
-      color: var(--white);
-      text-transform: none;
-      letter-spacing: 0;
-    }
-    
-    .color-options {
       display: flex;
       gap: 12px;
     }
     
-    .color-swatch {
-      width: 36px;
-      height: 36px;
+    .gallery-dot {
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
-      cursor: pointer;
+      background: var(--gray);
+      cursor: none;
+      transition: all 0.3s ease;
+    }
+    
+    .gallery-dot.active {
+      background: var(--white);
+      transform: scale(1.3);
+    }
+    
+    .gallery-arrows {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%);
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      pointer-events: none;
+    }
+    
+    .gallery-arrow {
+      width: 50px;
+      height: 50px;
+      border: 1px solid var(--gray);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      transition: all 0.3s ease;
+    }
+    
+    .gallery-arrow:hover {
+      border-color: var(--white);
+      background: var(--white);
+    }
+    
+    .gallery-arrow:hover svg {
+      stroke: var(--black);
+    }
+    
+    .gallery-arrow svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--gray);
+      fill: none;
+      stroke-width: 1.5;
+    }
+    
+    .gallery-counter {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--gray);
+    }
+    
+    /* Product Info */
+    .product-info {
+      padding: 120px 80px 80px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .product-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--red);
+      border: 1px solid var(--red);
+      padding: 6px 14px;
+      margin-bottom: 30px;
+      width: fit-content;
+    }
+    
+    .product-title {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    
+    .product-subtitle {
+      font-size: 15px;
+      color: var(--light-gray);
+      margin-bottom: 40px;
+    }
+    
+    .product-price {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 50px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    
+    .product-price .currency {
+      font-size: 18px;
+      color: var(--gray);
+    }
+    
+    /* Options */
+    .option-group {
+      margin-bottom: 35px;
+    }
+    
+    .option-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .option-value {
+      color: var(--white);
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    
+    .color-options {
+      display: flex;
+      gap: 14px;
+    }
+    
+    .color-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: none;
       position: relative;
       transition: transform 0.2s ease;
     }
@@ -306,137 +266,98 @@
     .color-swatch::after {
       content: '';
       position: absolute;
-      inset: -4px;
+      inset: -5px;
       border-radius: 50%;
       border: 2px solid transparent;
       transition: border-color 0.2s ease;
     }
     
-    .color-swatch:hover {
-      transform: scale(1.1);
-    }
+    .color-swatch:hover { transform: scale(1.1); }
+    .color-swatch.active::after { border-color: var(--white); }
+    .color-swatch.white { background: var(--white); }
+    .color-swatch.black { background: #1a1a1a; border: 1px solid #333; }
     
-    .color-swatch.active::after {
-      border-color: var(--white);
-    }
-    
-    .color-swatch.white {
-      background: var(--white);
-    }
-    
-    .color-swatch.black {
-      background: var(--dark);
-      border: 1px solid var(--gray-700);
-    }
-    
-    /* Size Selector */
     .size-options {
       display: flex;
       gap: 10px;
     }
     
     .size-btn {
-      width: 50px;
-      height: 50px;
+      width: 54px;
+      height: 54px;
       border: 1px solid var(--dark-border);
-      border-radius: 4px;
       font-size: 13px;
       font-weight: 500;
-      color: var(--gray-300);
+      color: var(--light-gray);
       background: transparent;
       transition: all 0.2s ease;
     }
     
     .size-btn:hover {
-      border-color: var(--gray-500);
+      border-color: var(--gray);
       color: var(--white);
     }
     
     .size-btn.active {
       border-color: var(--white);
       color: var(--white);
-      background: var(--dark-elevated);
+      background: var(--dark);
     }
     
-    .size-btn.disabled {
+    .size-btn.soldout {
       opacity: 0.3;
-      cursor: not-allowed;
-    }
-    
-    .size-guide-link {
-      font-size: 12px;
-      color: var(--gray-500);
-      text-decoration: underline;
-      cursor: pointer;
-    }
-    
-    .size-guide-link:hover {
-      color: var(--white);
+      text-decoration: line-through;
+      pointer-events: none;
     }
     
     /* Add to Cart */
-    .add-to-cart {
-      margin-top: 40px;
+    .actions {
+      margin-top: 50px;
       display: flex;
-      gap: 12px;
+      gap: 14px;
     }
     
-    .btn-primary {
+    .btn-cart {
       flex: 1;
-      height: 56px;
+      height: 60px;
       background: var(--white);
       color: var(--black);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      border-radius: 4px;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
     
-    .btn-primary:hover {
-      background: var(--gray-100);
-      transform: translateY(-1px);
-    }
-    
-    .btn-primary:active {
-      transform: translateY(0);
+    .btn-cart:hover {
+      background: var(--red);
+      color: var(--white);
     }
     
     .btn-wishlist {
-      width: 56px;
-      height: 56px;
+      width: 60px;
+      height: 60px;
       border: 1px solid var(--dark-border);
-      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
     
     .btn-wishlist svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--gray-500);
+      width: 22px;
+      height: 22px;
+      stroke: var(--gray);
       fill: none;
-      transition: all 0.2s ease;
+      transition: all 0.3s ease;
     }
     
-    .btn-wishlist:hover {
-      border-color: var(--gray-500);
-    }
+    .btn-wishlist:hover { border-color: var(--red); }
+    .btn-wishlist:hover svg { stroke: var(--red); }
+    .btn-wishlist.active svg { stroke: var(--red); fill: var(--red); }
     
-    .btn-wishlist:hover svg {
-      stroke: var(--white);
-    }
-    
-    .btn-wishlist.active svg {
-      stroke: var(--red);
-      fill: var(--red);
-    }
-    
-    /* Product Meta */
-    .product-meta {
+    /* Shipping info */
+    .shipping-info {
       margin-top: 40px;
       padding-top: 30px;
       border-top: 1px solid var(--dark-border);
@@ -444,539 +365,408 @@
       gap: 30px;
     }
     
-    .meta-item {
+    .shipping-item {
       display: flex;
       align-items: center;
       gap: 10px;
       font-size: 12px;
-      color: var(--gray-500);
+      color: var(--gray);
     }
     
-    .meta-item svg {
+    .shipping-item svg {
       width: 18px;
       height: 18px;
-      stroke: var(--gray-500);
+      stroke: var(--gray);
     }
     
-    /* Description Accordion */
-    .product-details {
-      margin-top: 50px;
-    }
-    
-    .accordion-item {
-      border-top: 1px solid var(--dark-border);
-    }
-    
-    .accordion-header {
-      width: 100%;
-      padding: 20px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--white);
-      text-align: left;
-    }
-    
-    .accordion-header svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--gray-500);
-      transition: transform 0.3s ease;
-    }
-    
-    .accordion-item.open .accordion-header svg {
-      transform: rotate(45deg);
-    }
-    
-    .accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s var(--ease);
-    }
-    
-    .accordion-item.open .accordion-content {
-      max-height: 500px;
-    }
-    
-    .accordion-inner {
-      padding-bottom: 25px;
-      font-size: 14px;
-      line-height: 1.7;
-      color: var(--gray-300);
-    }
-    
-    .accordion-inner ul {
-      list-style: none;
-      margin-top: 12px;
-    }
-    
-    .accordion-inner li {
-      padding: 6px 0;
-      padding-left: 16px;
-      position: relative;
-    }
-    
-    .accordion-inner li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 14px;
-      width: 4px;
-      height: 4px;
-      background: var(--gray-500);
-      border-radius: 50%;
-    }
-    
-    /* ===== STORY SECTION ===== */
-    .story-section {
-      padding: 150px 80px;
+    /* ==================== DETAILS SECTION ==================== */
+    .details {
+      padding: 120px 80px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      align-items: center;
+      gap: 100px;
       background: var(--dark);
     }
     
-    .story-image {
-      aspect-ratio: 4/5;
-      overflow: hidden;
-      border-radius: 4px;
-    }
-    
-    .story-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s var(--ease);
-    }
-    
-    .story-image:hover img {
-      transform: scale(1.03);
-    }
-    
-    .story-content {
-      max-width: 480px;
-    }
-    
-    .story-label {
-      font-size: 10px;
+    .details-content h2 {
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.25em;
       text-transform: uppercase;
       color: var(--red);
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
     
-    .story-title {
-      font-size: 36px;
+    .details-content h3 {
+      font-size: 28px;
       font-weight: 600;
-      letter-spacing: -0.02em;
       margin-bottom: 25px;
-      line-height: 1.2;
+      line-height: 1.3;
     }
     
-    .story-text {
+    .details-content p {
       font-size: 15px;
       line-height: 1.8;
-      color: var(--gray-300);
+      color: var(--light-gray);
       margin-bottom: 20px;
     }
     
-    .story-signature {
-      font-size: 13px;
-      color: var(--gray-500);
-      font-style: italic;
+    .details-list {
+      list-style: none;
       margin-top: 30px;
     }
     
-    /* ===== LIFESTYLE GALLERY ===== */
-    .lifestyle-section {
-      padding: 100px 0;
+    .details-list li {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--dark-border);
+      font-size: 14px;
+      color: var(--light-gray);
+      display: flex;
+      justify-content: space-between;
     }
     
-    .section-header {
-      padding: 0 80px;
-      margin-bottom: 50px;
+    .details-list li span:first-child {
+      color: var(--gray);
+    }
+    
+    .details-image {
+      position: relative;
+    }
+    
+    .details-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .details-image .overlay-text {
+      position: absolute;
+      bottom: 40px;
+      left: 40px;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      opacity: 0.6;
+    }
+    
+    /* ==================== LIFESTYLE SECTION ==================== */
+    .lifestyle {
+      padding: 0;
+    }
+    
+    .lifestyle-hero {
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .lifestyle-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .lifestyle-hero .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.8) 0%, transparent 50%);
+    }
+    
+    .lifestyle-hero .caption {
+      position: absolute;
+      bottom: 80px;
+      left: 80px;
+      right: 80px;
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
     }
     
-    .section-title {
+    .lifestyle-hero .caption-title {
       font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
+      letter-spacing: 0.25em;
       text-transform: uppercase;
-      color: var(--gray-500);
+      color: var(--light-gray);
+      margin-bottom: 10px;
+    }
+    
+    .lifestyle-hero .caption-text {
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 600;
+      max-width: 500px;
+      line-height: 1.3;
     }
     
     .lifestyle-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 4px;
+      grid-template-columns: 1fr 1fr;
     }
     
     .lifestyle-item {
       aspect-ratio: 4/5;
-      overflow: hidden;
       position: relative;
+      overflow: hidden;
     }
     
     .lifestyle-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.6s var(--ease);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
     
     .lifestyle-item:hover img {
       transform: scale(1.05);
     }
     
-    .lifestyle-item::after {
-      content: '';
+    .lifestyle-item .label {
       position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    .lifestyle-item:hover::after {
-      opacity: 1;
-    }
-    
-    .lifestyle-caption {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      font-size: 11px;
-      letter-spacing: 0.15em;
+      bottom: 30px;
+      left: 30px;
+      font-size: 10px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--white);
       opacity: 0;
       transform: translateY(10px);
-      transition: all 0.3s ease;
-      z-index: 1;
+      transition: all 0.4s ease;
     }
     
-    .lifestyle-item:hover .lifestyle-caption {
+    .lifestyle-item:hover .label {
       opacity: 1;
       transform: translateY(0);
     }
     
-    /* ===== SPECIFICATIONS ===== */
-    .specs-section {
-      padding: 100px 80px;
-      background: var(--dark);
+    /* ==================== SPECS SECTION ==================== */
+    .specs {
+      padding: 120px 80px;
+      text-align: center;
+    }
+    
+    .specs h2 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 60px;
     }
     
     .specs-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 60px;
-      max-width: 1000px;
+      gap: 40px;
+      max-width: 900px;
+      margin: 0 auto;
     }
     
     .spec-item {
-      text-align: center;
+      padding: 30px 20px;
+      border: 1px solid var(--dark-border);
     }
     
-    .spec-icon {
-      width: 48px;
-      height: 48px;
-      margin: 0 auto 16px;
-      stroke: var(--gray-500);
-    }
-    
-    .spec-label {
-      font-size: 11px;
+    .spec-item .value {
+      font-size: 24px;
       font-weight: 600;
+      margin-bottom: 8px;
+    }
+    
+    .spec-item .label {
+      font-size: 11px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--white);
-      margin-bottom: 6px;
+      color: var(--gray);
     }
     
-    .spec-value {
-      font-size: 13px;
-      color: var(--gray-500);
+    /* ==================== RELATED SECTION ==================== */
+    .related {
+      padding: 120px 80px;
+      background: var(--dark);
     }
     
-    /* ===== RELATED PRODUCTS ===== */
-    .related-section {
-      padding: 100px 80px;
+    .related-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 60px;
     }
+    
+    .related-header h2 {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+    
+    .related-header a {
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--light-gray);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: color 0.3s ease;
+    }
+    
+    .related-header a:hover { color: var(--white); }
     
     .related-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 30px;
-      margin-top: 50px;
     }
     
-    .product-card {
-      cursor: pointer;
+    .related-card {
+      cursor: none;
     }
     
-    .product-card-image {
+    .related-card-image {
       aspect-ratio: 3/4;
-      background: var(--dark);
-      border-radius: 4px;
+      background: var(--black);
+      margin-bottom: 20px;
       overflow: hidden;
-      margin-bottom: 16px;
     }
     
-    .product-card-image img {
+    .related-card-image img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.4s var(--ease);
+      transition: transform 0.6s ease;
     }
     
-    .product-card:hover .product-card-image img {
+    .related-card:hover .related-card-image img {
       transform: scale(1.05);
     }
     
-    .product-card-name {
-      font-size: 14px;
+    .related-card-name {
+      font-size: 15px;
       font-weight: 500;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
     
-    .product-card-price {
-      font-size: 13px;
-      color: var(--gray-500);
+    .related-card-price {
+      font-size: 14px;
+      color: var(--gray);
     }
     
-    /* ===== FOOTER ===== */
+    /* ==================== FOOTER ==================== */
     .footer {
       padding: 80px;
-      border-top: 1px solid var(--dark-border);
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 60px;
-    }
-    
-    .footer-brand {
-      grid-column: span 1;
-    }
-    
-    .footer-logo {
-      height: 24px;
-      opacity: 0.7;
-      margin-bottom: 20px;
-    }
-    
-    .footer-tagline {
-      font-size: 12px;
-      color: var(--gray-500);
-      line-height: 1.6;
-    }
-    
-    .footer-column h4 {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray-500);
-      margin-bottom: 20px;
-    }
-    
-    .footer-column ul {
-      list-style: none;
-    }
-    
-    .footer-column li {
-      margin-bottom: 12px;
-    }
-    
-    .footer-column a {
-      font-size: 13px;
-      color: var(--gray-300);
-      transition: color 0.2s ease;
-    }
-    
-    .footer-column a:hover {
-      color: var(--white);
-    }
-    
-    .footer-bottom {
-      grid-column: span 4;
-      padding-top: 40px;
       border-top: 1px solid var(--dark-border);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     
-    .footer-copyright {
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    
+    .footer-logo {
+      height: 24px;
+      opacity: 0.6;
+    }
+    
+    .footer-tagline {
+      font-size: 12px;
+      color: var(--gray);
+    }
+    
+    .footer-right {
       font-size: 11px;
-      color: var(--gray-500);
+      color: var(--gray);
+      letter-spacing: 0.1em;
     }
     
-    .footer-origin {
-      font-size: 11px;
-      color: var(--gray-500);
-    }
-    
-    /* ===== ANIMATIONS ===== */
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .animate-in {
-      animation: fadeIn 0.6s var(--ease) forwards;
-    }
-    
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 1200px) {
-      .product-section {
-        grid-template-columns: 1fr;
-      }
-      
-      .gallery {
-        position: relative;
-        top: 0;
-        height: 70vh;
-      }
-      
-      .product-info {
-        padding: 40px;
-      }
-      
-      .story-section {
-        grid-template-columns: 1fr;
-        padding: 80px 40px;
-      }
-      
-      .story-image {
-        order: -1;
-      }
-      
-      .lifestyle-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      
-      .specs-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .related-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .footer {
-        grid-template-columns: 1fr 1fr;
-        padding: 60px 40px;
-      }
-      
-      .footer-bottom {
-        grid-column: span 2;
-      }
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; }
+      .gallery { min-height: 70vh; }
+      .product-info { padding: 60px 40px; }
+      .details { grid-template-columns: 1fr; padding: 80px 40px; }
+      .details-image { order: -1; height: 50vh; }
+      .lifestyle-hero .caption { left: 40px; right: 40px; bottom: 40px; }
+      .specs-grid { grid-template-columns: repeat(2, 1fr); }
+      .related-grid { grid-template-columns: repeat(2, 1fr); }
     }
     
     @media (max-width: 768px) {
-      .header {
-        padding: 16px 20px;
-      }
-      
-      .nav {
-        gap: 20px;
-      }
-      
-      .gallery {
-        height: 60vh;
-      }
-      
-      .gallery-thumbnails {
-        display: none;
-      }
-      
-      .product-info {
-        padding: 30px 20px;
-      }
-      
-      .product-title {
-        font-size: 28px;
-      }
-      
-      .section-header {
-        padding: 0 20px;
-      }
-      
-      .lifestyle-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .specs-section {
-        padding: 60px 20px;
-      }
-      
-      .related-section {
-        padding: 60px 20px;
-      }
-      
-      .footer {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-      
-      .footer-bottom {
-        grid-column: span 1;
-        flex-direction: column;
-        gap: 10px;
-        text-align: center;
-      }
+      body { cursor: auto; }
+      .cursor { display: none; }
+      .header { padding: 20px; }
+      .nav { gap: 20px; }
+      .gallery-arrows { display: none; }
+      .product-info { padding: 40px 20px; }
+      .product-title { font-size: 28px; }
+      .actions { flex-direction: column; }
+      .btn-wishlist { width: 100%; }
+      .details { padding: 60px 20px; gap: 40px; }
+      .lifestyle-hero { height: 70vh; }
+      .lifestyle-hero .caption { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .lifestyle-grid { grid-template-columns: 1fr; }
+      .specs { padding: 60px 20px; }
+      .specs-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .related { padding: 60px 20px; }
+      .related-grid { grid-template-columns: 1fr; }
+      .footer { flex-direction: column; gap: 30px; text-align: center; padding: 40px 20px; }
+      .footer-left { flex-direction: column; gap: 20px; }
     }
   </style>
 </head>
 <body>
-  <!-- HEADER -->
-  <header class="header" id="header">
-    <a href="/">
-      <img src="logo_white_transparent.png" alt="Kýček Studios" class="logo">
+
+  <!-- Cursor -->
+  <div class="cursor" id="cursor"></div>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="home.html">
+      <img src="logo_white_transparent.png" alt="Kýček" class="logo">
     </a>
     <nav class="nav">
-      <a href="/shop" class="nav-link">Shop</a>
-      <a href="/story" class="nav-link">Story</a>
-      <a href="/cart" class="nav-link" style="display: flex; align-items: center;">
-        Cart
-        <span class="cart-count">0</span>
-      </a>
+      <a href="home.html">Home</a>
+      <a href="#">Shop</a>
+      <a href="#">Cart (0)</a>
     </nav>
   </header>
 
-  <!-- MAIN PRODUCT SECTION -->
-  <section class="product-section">
-    <!-- Gallery -->
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
     <div class="gallery">
-      <div class="gallery-thumbnails">
-        <div class="thumbnail active" data-index="0">
-          <img src="product-flatlay.png" alt="Flatlay">
+      <div class="gallery-slides" id="gallerySlides">
+        <div class="gallery-slide">
+          <img src="product-flatlay.png" alt="Essential Tee - Flat">
         </div>
-        <div class="thumbnail" data-index="1">
-          <img src="model-back.png" alt="Model back">
+        <div class="gallery-slide">
+          <img src="model-back.png" alt="Essential Tee - Model Back">
         </div>
-        <div class="thumbnail" data-index="2">
-          <img src="lifestyle-beach.png" alt="Lifestyle">
+        <div class="gallery-slide">
+          <img src="lifestyle-beach.png" alt="Essential Tee - Beach">
         </div>
-        <div class="thumbnail" data-index="3">
-          <img src="lifestyle-studio-movement.png" alt="Movement">
+        <div class="gallery-slide">
+          <img src="lifestyle-studio-movement.png" alt="Essential Tee - Studio">
         </div>
       </div>
-      <div class="gallery-main">
-        <img src="product-flatlay.png" alt="Essential Tee White" class="active" data-index="0">
-        <img src="model-back.png" alt="Essential Tee White on model" data-index="1">
-        <img src="lifestyle-beach.png" alt="Essential Tee lifestyle" data-index="2">
-        <img src="lifestyle-studio-movement.png" alt="Essential Tee movement" data-index="3">
+      
+      <div class="gallery-counter">
+        <span id="currentSlide">01</span> / <span id="totalSlides">04</span>
       </div>
-      <div class="gallery-nav">
+      
+      <div class="gallery-arrows">
+        <button class="gallery-arrow" id="prevBtn">
+          <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </button>
+        <button class="gallery-arrow" id="nextBtn">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      
+      <div class="gallery-nav" id="galleryNav">
         <div class="gallery-dot active" data-index="0"></div>
         <div class="gallery-dot" data-index="1"></div>
         <div class="gallery-dot" data-index="2"></div>
@@ -984,12 +774,8 @@
       </div>
     </div>
     
-    <!-- Product Info -->
     <div class="product-info">
-      <div class="breadcrumb">
-        <a href="/">Home</a> / <a href="/shop">Shop</a> / Essential Tee
-      </div>
-      
+      <span class="product-badge">Signature</span>
       <h1 class="product-title">Essential Tee</h1>
       <p class="product-subtitle">Performance cotton with signature crow mark</p>
       
@@ -997,335 +783,233 @@
         <span class="currency">$</span>68
       </div>
       
-      <!-- Color -->
       <div class="option-group">
         <div class="option-label">
           Color
-          <span class="option-value">White</span>
+          <span class="option-value" id="colorValue">White</span>
         </div>
         <div class="color-options">
-          <div class="color-swatch white active" data-color="White"></div>
-          <div class="color-swatch black" data-color="Black"></div>
+          <button class="color-swatch white active" data-color="White"></button>
+          <button class="color-swatch black" data-color="Black"></button>
         </div>
       </div>
       
-      <!-- Size -->
       <div class="option-group">
         <div class="option-label">
           Size
-          <a class="size-guide-link">Size Guide</a>
+          <a href="#" style="color: var(--light-gray); font-size: 11px; text-decoration: underline;">Size Guide</a>
         </div>
         <div class="size-options">
           <button class="size-btn" data-size="S">S</button>
           <button class="size-btn active" data-size="M">M</button>
           <button class="size-btn" data-size="L">L</button>
           <button class="size-btn" data-size="XL">XL</button>
-          <button class="size-btn disabled" data-size="XXL">XXL</button>
+          <button class="size-btn soldout" data-size="XXL">XXL</button>
         </div>
       </div>
       
-      <!-- Add to Cart -->
-      <div class="add-to-cart">
-        <button class="btn-primary">Add to Cart</button>
-        <button class="btn-wishlist">
+      <div class="actions">
+        <button class="btn-cart" id="addToCart">Add to Cart</button>
+        <button class="btn-wishlist" id="wishlistBtn">
           <svg viewBox="0 0 24 24" stroke-width="1.5">
             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
           </svg>
         </button>
       </div>
       
-      <!-- Meta -->
-      <div class="product-meta">
-        <div class="meta-item">
+      <div class="shipping-info">
+        <div class="shipping-item">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
             <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
           Free shipping over $100
         </div>
-        <div class="meta-item">
+        <div class="shipping-item">
           <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-            <path d="M4 4h16v16H4V4z"/>
-            <path d="M9 9h6v6H9V9z"/>
+            <path d="M4 4h16v16H4V4z"/><path d="M9 9h6v6H9V9z"/>
           </svg>
           30-day returns
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ==================== DETAILS ==================== -->
+  <section class="details">
+    <div class="details-content">
+      <h2>About</h2>
+      <h3>Built for movement. Designed with intention.</h3>
+      <p>
+        The Essential Tee is where performance meets philosophy. Premium Pima cotton with 4-way stretch moves with your body, not against it. The signature crow mark sits between the shoulder blades—visible only to those behind you.
+      </p>
+      <p>
+        Minimal branding. Maximum quality. Made by Humans, on Earth.
+      </p>
       
-      <!-- Accordion -->
-      <div class="product-details">
-        <div class="accordion-item open">
-          <button class="accordion-header">
-            Description
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-          </button>
-          <div class="accordion-content">
-            <div class="accordion-inner">
-              The Essential Tee is built for movement. Premium Pima cotton with 4-way stretch, finished with our signature crow mark between the shoulder blades. Minimal branding, maximum performance.
-              <ul>
-                <li>100% Pima cotton, 180 GSM</li>
-                <li>4-way stretch for unrestricted movement</li>
-                <li>Moisture-wicking finish</li>
-                <li>Reinforced collar and cuffs</li>
-                <li>Signature crow mark placement</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <div class="accordion-item">
-          <button class="accordion-header">
-            Materials & Care
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-          </button>
-          <div class="accordion-content">
-            <div class="accordion-inner">
-              <ul>
-                <li>Machine wash cold, inside out</li>
-                <li>Tumble dry low</li>
-                <li>Do not bleach</li>
-                <li>Iron on low if needed</li>
-                <li>Made in Dominican Republic</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <div class="accordion-item">
-          <button class="accordion-header">
-            Shipping & Returns
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-              <path d="M12 5v14M5 12h14"/>
-            </svg>
-          </button>
-          <div class="accordion-content">
-            <div class="accordion-inner">
-              <ul>
-                <li>Free shipping on orders over $100</li>
-                <li>Standard shipping: 5-7 business days</li>
-                <li>Express shipping: 2-3 business days</li>
-                <li>30-day return policy, unworn with tags</li>
-                <li>Free returns within the US</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ul class="details-list">
+        <li><span>Material</span><span>100% Pima Cotton, 180 GSM</span></li>
+        <li><span>Stretch</span><span>4-way stretch</span></li>
+        <li><span>Finish</span><span>Moisture-wicking</span></li>
+        <li><span>Fit</span><span>Athletic regular</span></li>
+        <li><span>Care</span><span>Machine wash cold, tumble dry low</span></li>
+        <li><span>Origin</span><span>Made in Dominican Republic</span></li>
+      </ul>
+    </div>
+    
+    <div class="details-image">
+      <img src="model-back.png" alt="Detail shot">
+      <span class="overlay-text">Signature crow placement</span>
     </div>
   </section>
 
-  <!-- STORY SECTION -->
-  <section class="story-section">
-    <div class="story-image">
-      <img src="lifestyle-nature-ritual.png" alt="Connection to nature">
-    </div>
-    <div class="story-content">
-      <div class="story-label">The Philosophy</div>
-      <h2 class="story-title">Made by Humans,<br>on Earth</h2>
-      <p class="story-text">
-        In an age of algorithmic design and automated production, we chose a different path. Every Kýček piece carries the intention, imperfection, and soul that only human hands can provide.
-      </p>
-      <p class="story-text">
-        The crow—our symbol—represents intelligence, adaptability, and the ability to thrive anywhere. Like you, it moves through the world with purpose.
-      </p>
-      <div class="story-signature">
-        — Kýček Studios, Dominican Republic
+  <!-- ==================== LIFESTYLE ==================== -->
+  <section class="lifestyle">
+    <div class="lifestyle-hero">
+      <img src="lifestyle-nature-ritual.png" alt="Nature Ritual">
+      <div class="overlay"></div>
+      <div class="caption">
+        <div>
+          <div class="caption-title">In Context</div>
+          <div class="caption-text">The crow sees what others miss. So do you.</div>
+        </div>
+        <div style="font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray);">
+          Nature Ritual
+        </div>
       </div>
     </div>
-  </section>
-
-  <!-- LIFESTYLE GALLERY -->
-  <section class="lifestyle-section">
-    <div class="section-header">
-      <h3 class="section-title">In Motion</h3>
-    </div>
+    
     <div class="lifestyle-grid">
       <div class="lifestyle-item">
         <img src="lifestyle-urban-dawn.png" alt="Urban Dawn">
-        <span class="lifestyle-caption">Urban Dawn</span>
+        <span class="label">Urban Dawn</span>
       </div>
       <div class="lifestyle-item">
         <img src="lifestyle-studio-movement.png" alt="Studio Movement">
-        <span class="lifestyle-caption">Studio Movement</span>
-      </div>
-      <div class="lifestyle-item">
-        <img src="lifestyle-beach.png" alt="Caribbean Light">
-        <span class="lifestyle-caption">Caribbean Light</span>
+        <span class="label">Studio Movement</span>
       </div>
     </div>
   </section>
 
-  <!-- SPECIFICATIONS -->
-  <section class="specs-section">
-    <div class="section-header" style="padding: 0; margin-bottom: 50px;">
-      <h3 class="section-title">Specifications</h3>
-    </div>
+  <!-- ==================== SPECS ==================== -->
+  <section class="specs">
+    <h2>Specifications</h2>
     <div class="specs-grid">
       <div class="spec-item">
-        <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M12 6v6l4 2"/>
-        </svg>
-        <div class="spec-label">Weight</div>
-        <div class="spec-value">180 GSM</div>
+        <div class="value">180g</div>
+        <div class="label">Weight</div>
       </div>
       <div class="spec-item">
-        <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-        </svg>
-        <div class="spec-label">Material</div>
-        <div class="spec-value">100% Pima Cotton</div>
+        <div class="value">100%</div>
+        <div class="label">Pima Cotton</div>
       </div>
       <div class="spec-item">
-        <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
-          <circle cx="12" cy="10" r="3"/>
-        </svg>
-        <div class="spec-label">Origin</div>
-        <div class="spec-value">Dominican Republic</div>
+        <div class="value">4-Way</div>
+        <div class="label">Stretch</div>
       </div>
       <div class="spec-item">
-        <svg class="spec-icon" viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
-        <div class="spec-label">Fit</div>
-        <div class="spec-value">Athletic Regular</div>
+        <div class="value">DR</div>
+        <div class="label">Origin</div>
       </div>
     </div>
   </section>
 
-  <!-- RELATED PRODUCTS -->
-  <section class="related-section">
-    <div class="section-header" style="padding: 0;">
-      <h3 class="section-title">Complete the Look</h3>
+  <!-- ==================== RELATED ==================== -->
+  <section class="related">
+    <div class="related-header">
+      <h2>Complete the Look</h2>
+      <a href="#">
+        View All
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </a>
     </div>
+    
     <div class="related-grid">
-      <div class="product-card">
-        <div class="product-card-image">
+      <a href="#" class="related-card">
+        <div class="related-card-image">
           <img src="all pro pic clothes (2).png" alt="Essential Tee Black">
         </div>
-        <div class="product-card-name">Essential Tee — Black</div>
-        <div class="product-card-price">$68</div>
-      </div>
-      <div class="product-card">
-        <div class="product-card-image">
+        <div class="related-card-name">Essential Tee — Black</div>
+        <div class="related-card-price">$68</div>
+      </a>
+      <a href="#" class="related-card">
+        <div class="related-card-image">
           <img src="all pro pic clothes (3).png" alt="Training Short White">
         </div>
-        <div class="product-card-name">Training Short — White</div>
-        <div class="product-card-price">$78</div>
-      </div>
-      <div class="product-card">
-        <div class="product-card-image">
+        <div class="related-card-name">Training Short — White</div>
+        <div class="related-card-price">$78</div>
+      </a>
+      <a href="#" class="related-card">
+        <div class="related-card-image">
           <img src="all pro pic clothes (4).png" alt="Training Short Black">
         </div>
-        <div class="product-card-name">Training Short — Black</div>
-        <div class="product-card-price">$78</div>
-      </div>
-      <div class="product-card">
-        <div class="product-card-image" style="display: flex; align-items: center; justify-content: center;">
-          <img src="logo_transparent.png" alt="View All" style="width: 60%; height: auto;">
-        </div>
-        <div class="product-card-name">View All Products</div>
-        <div class="product-card-price">→</div>
-      </div>
+        <div class="related-card-name">Training Short — Black</div>
+        <div class="related-card-price">$78</div>
+      </a>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ==================== FOOTER ==================== -->
   <footer class="footer">
-    <div class="footer-brand">
+    <div class="footer-left">
       <img src="logo_white_transparent.png" alt="Kýček" class="footer-logo">
-      <p class="footer-tagline">
-        Performance wear for those who move with purpose.<br>
-        Made by Humans, on Earth.
-      </p>
+      <span class="footer-tagline">Made by Humans, on Earth</span>
     </div>
-    
-    <div class="footer-column">
-      <h4>Shop</h4>
-      <ul>
-        <li><a href="#">All Products</a></li>
-        <li><a href="#">Tees</a></li>
-        <li><a href="#">Shorts</a></li>
-        <li><a href="#">Accessories</a></li>
-      </ul>
-    </div>
-    
-    <div class="footer-column">
-      <h4>Company</h4>
-      <ul>
-        <li><a href="#">Our Story</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Careers</a></li>
-        <li><a href="#">Press</a></li>
-      </ul>
-    </div>
-    
-    <div class="footer-column">
-      <h4>Support</h4>
-      <ul>
-        <li><a href="#">Size Guide</a></li>
-        <li><a href="#">Shipping</a></li>
-        <li><a href="#">Returns</a></li>
-        <li><a href="#">FAQ</a></li>
-      </ul>
-    </div>
-    
-    <div class="footer-bottom">
-      <div class="footer-copyright">
-        © 2026 Kýček Studios. All rights reserved.
-      </div>
-      <div class="footer-origin">
-        Dominican Republic
-      </div>
+    <div class="footer-right">
+      © 2026 Kýček Studios · Dominican Republic
     </div>
   </footer>
 
   <script>
-    // Header scroll effect
-    const header = document.getElementById('header');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        header.classList.add('scrolled');
-      } else {
-        header.classList.remove('scrolled');
-      }
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+    
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
     
-    // Gallery functionality
-    const thumbnails = document.querySelectorAll('.thumbnail');
-    const mainImages = document.querySelectorAll('.gallery-main img');
-    const dots = document.querySelectorAll('.gallery-dot');
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.1;
+      cursorY += (mouseY - cursorY) * 0.1;
+      cursor.style.left = cursorX - 20 + 'px';
+      cursor.style.top = cursorY - 20 + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
     
-    function setActiveImage(index) {
-      thumbnails.forEach(t => t.classList.remove('active'));
-      mainImages.forEach(img => img.classList.remove('active'));
-      dots.forEach(d => d.classList.remove('active'));
-      
-      thumbnails[index].classList.add('active');
-      mainImages[index].classList.add('active');
-      dots[index].classList.add('active');
+    document.addEventListener('mousedown', () => cursor.classList.add('click'));
+    document.addEventListener('mouseup', () => cursor.classList.remove('click'));
+    
+    // Gallery
+    const slides = document.getElementById('gallerySlides');
+    const dots = document.querySelectorAll('.gallery-dot');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const currentSlideEl = document.getElementById('currentSlide');
+    let currentIndex = 0;
+    const totalSlides = 4;
+    
+    function goToSlide(index) {
+      if (index < 0) index = totalSlides - 1;
+      if (index >= totalSlides) index = 0;
+      currentIndex = index;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+      currentSlideEl.textContent = String(index + 1).padStart(2, '0');
     }
     
-    thumbnails.forEach(thumb => {
-      thumb.addEventListener('click', () => {
-        setActiveImage(parseInt(thumb.dataset.index));
-      });
-    });
-    
+    prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
     dots.forEach(dot => {
-      dot.addEventListener('click', () => {
-        setActiveImage(parseInt(dot.dataset.index));
-      });
+      dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.index)));
     });
     
     // Color selector
     const colorSwatches = document.querySelectorAll('.color-swatch');
-    const colorValue = document.querySelector('.option-value');
-    
+    const colorValue = document.getElementById('colorValue');
     colorSwatches.forEach(swatch => {
       swatch.addEventListener('click', () => {
         colorSwatches.forEach(s => s.classList.remove('active'));
@@ -1335,8 +1019,7 @@
     });
     
     // Size selector
-    const sizeBtns = document.querySelectorAll('.size-btn:not(.disabled)');
-    
+    const sizeBtns = document.querySelectorAll('.size-btn:not(.soldout)');
     sizeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         sizeBtns.forEach(b => b.classList.remove('active'));
@@ -1344,44 +1027,29 @@
       });
     });
     
-    // Wishlist toggle
-    const wishlistBtn = document.querySelector('.btn-wishlist');
-    wishlistBtn.addEventListener('click', () => {
-      wishlistBtn.classList.toggle('active');
-    });
+    // Wishlist
+    const wishlistBtn = document.getElementById('wishlistBtn');
+    wishlistBtn.addEventListener('click', () => wishlistBtn.classList.toggle('active'));
     
-    // Accordion
-    const accordionItems = document.querySelectorAll('.accordion-item');
-    
-    accordionItems.forEach(item => {
-      const header = item.querySelector('.accordion-header');
-      header.addEventListener('click', () => {
-        // Close others
-        accordionItems.forEach(other => {
-          if (other !== item) other.classList.remove('open');
-        });
-        item.classList.toggle('open');
-      });
-    });
-    
-    // Add to cart animation
-    const addToCartBtn = document.querySelector('.btn-primary');
-    const cartCount = document.querySelector('.cart-count');
-    
-    addToCartBtn.addEventListener('click', () => {
-      addToCartBtn.textContent = 'Added!';
-      addToCartBtn.style.background = 'var(--red)';
-      addToCartBtn.style.color = 'white';
-      
-      const currentCount = parseInt(cartCount.textContent);
-      cartCount.textContent = currentCount + 1;
-      
+    // Add to cart
+    const addToCart = document.getElementById('addToCart');
+    addToCart.addEventListener('click', () => {
+      addToCart.textContent = 'Added ✓';
+      addToCart.style.background = 'var(--red)';
+      addToCart.style.color = 'var(--white)';
       setTimeout(() => {
-        addToCartBtn.textContent = 'Add to Cart';
-        addToCartBtn.style.background = '';
-        addToCartBtn.style.color = '';
+        addToCart.textContent = 'Add to Cart';
+        addToCart.style.background = '';
+        addToCart.style.color = '';
       }, 2000);
     });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') goToSlide(currentIndex - 1);
+      if (e.key === 'ArrowRight') goToSlide(currentIndex + 1);
+    });
   </script>
+
 </body>
 </html>
