@@ -335,7 +335,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      gap: 16px;
     }
     
     .bundle-text strong {
@@ -368,20 +368,23 @@
     }
     
     .btn-bundle {
-      width: 100%;
-      height: 50px;
-      background: var(--red);
+      padding: 6px 14px;
+      background: transparent;
+      border: 1px solid var(--white);
       color: var(--white);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       transition: all 0.3s ease;
       cursor: none;
+      opacity: 0.8;
     }
     
     .btn-bundle:hover {
-      background: #c5303d;
+      background: var(--white);
+      color: var(--black);
+      opacity: 1;
     }
 
     /* Add to Cart */
@@ -894,8 +897,8 @@
             <span class="bundle-original">$146</span>
             <span class="bundle-price">$116.80</span>
           </div>
+          <button class="btn-bundle" id="addBundle">Add</button>
         </div>
-        <button class="btn-bundle" id="addBundle">Add Bundle to Cart</button>
       </div>
 
       <div class="actions">
@@ -1143,11 +1146,13 @@
     // Bundle add to cart
     const addBundle = document.getElementById('addBundle');
     addBundle.addEventListener('click', () => {
-      addBundle.textContent = 'Bundle Added ✓';
-      addBundle.style.background = '#1a1a1a';
+      addBundle.textContent = 'Added ✓';
+      addBundle.style.background = 'var(--white)';
+      addBundle.style.color = 'var(--black)';
       setTimeout(() => {
-        addBundle.textContent = 'Add Bundle to Cart';
+        addBundle.textContent = 'Add';
         addBundle.style.background = '';
+        addBundle.style.color = '';
       }, 2000);
     });
   </script>
